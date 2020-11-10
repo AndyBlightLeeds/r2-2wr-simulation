@@ -6,31 +6,50 @@
     <!-- Chassis with caster -->
     <link name='chassis'>
       <pose>0 0 .1 0 0 0</pose>
-
       <collision name='collision'>
         <geometry>
           <box>
-            <size>.4 .2 .1</size>
+            <size>.2 .13 .005</size>
           </box>
         </geometry>
       </collision>
-
       <visual name='visual'>
         <geometry>
           <box>
-            <size>.4 .2 .1</size>
+            <size>.2 .13 .005</size>
           </box>
         </geometry>
       </visual>
+      <!-- Battery box -->
+      <collision name='battery_box_collision'>
+        <pose>-0.035 0 -0.007 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>.055 .09 .013</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='battery_box_visual'>
+        <geometry>
+          <box>
+            <size>.055 .09 .013</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.1 0.1 0.1 1</ambient>
+          <diffuse>0.1 0.1 0.2 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
       <!-- Caster -->
       <collision name='caster_collision'>
-        <pose>-0.15 0 -0.05 0 0 0</pose>
+        <pose>-0.08 0 -0.025 0 0 0</pose>
         <geometry>
             <sphere>
-            <radius>.05</radius>
+            <radius>.02</radius>
           </sphere>
         </geometry>
-
         <surface>
           <friction>
             <ode>
@@ -42,58 +61,57 @@
           </friction>
         </surface>
       </collision>
-
       <visual name='caster_visual'>
-        <pose>-0.15 0 -0.05 0 0 0</pose>
+        <pose>-0.08 0 -0.025 0 0 0</pose>
         <geometry>
           <sphere>
-            <radius>.05</radius>
+            <radius>.02</radius>
           </sphere>
         </geometry>
       </visual>
     </link>
     <!-- Left wheel -->
     <link name="left_wheel">
-      <pose>0.1 0.13 0.1 0 1.5707 1.5707</pose>
+      <pose>0.03 -0.0825 0.1 0 1.5707 1.5707</pose>
       <collision name="collision">
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>.05</length>
+            <radius>.033</radius>
+            <length>.025</length>
           </cylinder>
         </geometry>
       </collision>
       <visual name="visual">
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>.05</length>
+            <radius>.033</radius>
+            <length>.025</length>
           </cylinder>
         </geometry>
       </visual>
     </link>
     <!-- Right wheel -->
     <link name="right_wheel">
-      <pose>0.1 -0.13 0.1 0 1.5707 1.5707</pose>
+      <pose>0.03 0.0825 0.1 0 1.5707 1.5707</pose>
       <collision name="collision">
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>.05</length>
+            <radius>.033</radius>
+            <length>.025</length>
           </cylinder>
         </geometry>
       </collision>
       <visual name="visual">
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>.05</length>
+            <radius>.033</radius>
+            <length>.025</length>
           </cylinder>
         </geometry>
       </visual>
     </link>
     <joint type="revolute" name="left_wheel_hinge">
-      <pose>0 0 -0.03 0 0 0</pose>
+      <pose>-0.012 0 -0.03 0 0 0</pose>
       <child>left_wheel</child>
       <parent>chassis</parent>
       <axis>
@@ -102,7 +120,7 @@
     </joint>
 
     <joint type="revolute" name="right_wheel_hinge">
-      <pose>0 0 0.03 0 0 0</pose>
+      <pose>-0.012 0 0.03 0 0 0</pose>
       <child>right_wheel</child>
       <parent>chassis</parent>
       <axis>
