@@ -37,6 +37,12 @@ RUN apt-get update \
         libgazebo11-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# nvidia-container-runtime
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+
 # Create user with UID and GID matching those on my PC.
 # This allows the user to delete build products created in the source tree.
 # Also add user build to sudoers list.

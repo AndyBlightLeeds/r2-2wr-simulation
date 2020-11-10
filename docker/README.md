@@ -24,56 +24,7 @@ container and leaves it running until `~/code/docker/stop.bash` is called.
 When the container is running, you can get a Bash user prompt attached to the
 container using `~/code/docker/attach.bash`.
 
-After attaching to the container for the first time, build the drone package
-as follows:
-
-```text
-cd ~/code/scripts/build
-./drone.bash
-```
-
-Once this is done, you are ready to start the simulation. At the Bash prompt,
-enter the following:
-
-```text
-cd ~/code/scripts/run
-./auto_start.bash
-```
-
-At this point, you should be able to see the Gazebo client with an Iris drone
-on the ground.  Using `ps` on the shell should show something like this:
-
-```text
-$ ps x
-  PID TTY      STAT   TIME COMMAND
-    1 pts/0    Ss+    0:00 /bin/bash
-   10 pts/1    Ss     0:00 /bin/bash
- 1166 pts/1    S      0:00 /bin/bash ./gzserver.bash
- 1196 pts/1    Sl    14:34 gzserver --verbose --physics=ode --server-plugin libgazebo_ros_factory.so worlds/empty.world
- 1240 pts/1    S      0:00 /bin/bash ./gzclient.bash
- 1270 pts/1    Sl     9:16 gzclient --verbose
- 1344 pts/1    S      0:00 /bin/bash ./auto_start.bash
- 1378 pts/1    Sl     4:10 bin/px4 /tmp/px4/ROMFS/px4fmu_common -s /tmp/px4/ROMFS/px4fmu_common/init.d-posix/rcS -i 0 -d
- 1634 pts/1    S      0:00 /bin/bash ./micrortps_agent.bash
- 1636 pts/1    Sl    20:04 build/px4_ros_com/micrortps_agent -t UDP -r 2020 -s 2019
- 1899 pts/2    Ss+    0:00 /bin/bash
- 2299 pts/1    R+     0:00 ps x
-
-```
-
-This shows that there are four processes running: Gazebo server and client,
-one instance of PX4 and the MicroRTPS agent.  These four process are the
-minimum needed to run the drone test software.
-
-To start the drone test software, run the following commands:
-
-```text
-cd ~/px4_drone_simulation_ws/
-. ./install/setup.bash
-./build/drone/drone
-```
-
-You should see the drone execute the test missions defined in `drone.cpp`.
+TODO
 
 ## Set up NVidia
 

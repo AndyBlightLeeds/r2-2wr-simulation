@@ -4,10 +4,7 @@
 
 docker_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
 . ${docker_dir}/vars.bash
-CODE_DIR=${docker_dir}/../..
-
-mkdir -p ${WORKSPACE_DIR}
-cp ${docker_dir}/setup_*.bash ${WORKSPACE_DIR}
+CODE_DIR=${docker_dir}/..
 
 docker container inspect ${CONTAINER_NAME} &> /dev/null
 if [ $? == 0 ]
@@ -24,6 +21,7 @@ then
     fi
 else
     # Container does not exist.
+    mkdir -p ${WORKSPACE_DIR}
     # Setup X window for the container to use.
     XAUTH=/tmp/.docker.xauth
     if [ ! -f $XAUTH ]
