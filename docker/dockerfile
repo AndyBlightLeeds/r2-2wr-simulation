@@ -4,6 +4,8 @@ FROM ros:foxy-ros-base-focal
 
 ENV ROS2_DISTRO=foxy
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         sudo \
@@ -19,7 +21,7 @@ RUN cd /usr/local/bin/ \
 
 # Install ROS2 packages.
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-foxy-desktop=0.9.2-1* \
+        ros-foxy-desktop=0.9.2-1* \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Gazebo packages.
@@ -52,6 +54,9 @@ RUN groupadd -g 1000 build && \
     echo "build ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/build && \
     chmod 0440 /etc/sudoers.d/build
 ENV HOME /home/build
+
+# Source ROS2 setup script for each shell.
+RUN echo ". /opt/ros/foxy/setup.bash" > /home/build/.bash_aliases
 
 # Change ownership of build directory to build:build.
 RUN chown -R build:build /home/build/

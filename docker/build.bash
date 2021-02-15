@@ -18,4 +18,6 @@ then
     set +e
 fi
 
+echo
 echo "Build of ${IMAGE_NAME} took $SECONDS seconds."
+echo

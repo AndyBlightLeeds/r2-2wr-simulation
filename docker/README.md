@@ -1,35 +1,22 @@
 # Docker
 
-This directory provides the user with a method to quickly build and test the
-drone package in this repo in a docker container.  Scripts are provided to
-create the docker image and to start, stop and attach to the docker container.
+The files in this directory provides the user with a method to quickly build and test the pipebots code in a docker container that also support hardware acceleration for NVidia GPUs.  Scripts are provided to create the docker image and to start, stop and attach to the docker container.
 
-__IMPORTANT NOTE: running the simulation requires a graphics card with
-4GB RAM or better.__
+__IMPORTANT NOTE: running the simulation requires a graphics card with 4GB RAM or better.__
 
-To set up your PC to use a NVidia graphics card, please read the section
-`Set up NVidia`.  Docker supports other graphics cards but these have not been
-tested or documented.
+First, set up your PC to allow docker to use your NVidia GPU by working through the section `Set up NVidia`.  Docker supports other graphics cards but these have not been tested or documented.
 
-## Basic operation
+Then you should  be able to use convenience scripts as follows.  The script `~/code/docker/build.bash` creates the docker image.  Do this just once!  This process took about 30 minutes on my PC, so get on with something else while the image is built.
 
-The script `~/code/docker/build.bash` creates the docker container, installing all
-packages as defined in the `~/code/scripts/install` directory.  Do this just once!
-This process took about 30 minutes on my PC, so get on with something else
-while the image is built.
+To start the container, use `~/code/docker/start.bash` which script starts the container and leaves it running until `~/code/docker/stop.bash` is called.  It also copies any scripts from the `~/setup` directory into the workspace directory to allow the user to setup the workspace.
 
-To start the container, use `~/code/docker/start.bash`.  This script starts the
-container and leaves it running until `~/code/docker/stop.bash` is called.
+After starting the container, you can get a Bash user prompt attached to the container using `~/code/docker/attach.bash`.  The command `source /opt/ros/foxy/setup.bash` is run for each new terminal.
 
-When the container is running, you can get a Bash user prompt attached to the
-container using `~/code/docker/attach.bash`.
-
-TODO
+To stop the container, use `./stop.bash`.
 
 ## Set up NVidia
 
-NOTE: The docker image is setup for NVidia and uses the `nvidia-docker2`
-software.
+NOTE: The docker image is setup for NVidia and uses the `nvidia-docker2` software.
 
 On your PC, install the NVidia container toolkit.
 
