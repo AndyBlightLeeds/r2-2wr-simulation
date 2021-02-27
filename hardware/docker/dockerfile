@@ -1,18 +1,21 @@
 FROM ubuntu:18.04
 
-ENV HOME /home/developer
-WORKDIR /home/developer
+ENV DEBIAN_FRONTEND noninteractive
 
-# Replace 1000 with your user / group id
-RUN export uid=1000 gid=1000 && \
-    mkdir -p /home/developer && \
-    mkdir -p /etc/sudoers.d && \
-    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
-    echo "developer:x:${uid}:" >> /etc/group && \
-    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
-    chmod 0440 /etc/sudoers.d/developer && \
-    chown ${uid}:${gid} -R /home/developer
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        sudo \
+        ccache \
+        wget \
+        apt-utils \
+    && rm -rf /var/lib/apt/lists/*
 
+# Setup links for ccache
+RUN cd /usr/local/bin/ \
+    && ln -s ccache gcc && ln -s ccache g++ \
+    && ln -s ccache cc && ln -s ccache c++
+
+# Install tools for ESP32
 RUN apt-get update \
 	&& apt-get install -y \
         software-properties-common \
@@ -21,7 +24,7 @@ RUN apt-get update \
 		xvfb \
         xz-utils \
     	sudo \
-        python2 \
+        python \
         python-serial \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -31,16 +34,32 @@ RUN add-apt-repository ppa:ubuntuhandbook1/apps \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
-# Add developer user to the dialout group to be ale to write the serial USB device
-RUN sed "s/^dialout.*/&developer/" /etc/group -i \
-    && sed "s/^root.*/&developer/" /etc/group -i
 
+# Install the Arduino IDE.
 ENV ARDUINO_IDE_VERSION 1.8.12
 RUN (wget -q -O- https://downloads.arduino.cc/arduino-${ARDUINO_IDE_VERSION}-linux64.tar.xz \
 	| tar xJC /usr/local/share \
 	&& ln -s /usr/local/share/arduino-${ARDUINO_IDE_VERSION} /usr/local/share/arduino \
 	&& ln -s /usr/local/share/arduino-${ARDUINO_IDE_VERSION}/arduino /usr/local/bin/arduino)
 
+# This allows the user to delete build products created in the source tree.
+# Also add user build to sudoers list.
+RUN groupadd -g 1000 build && \
+    useradd -u 1000 -g 1000 -m -s /bin/bash build && \
+    mkdir -p /etc/sudoers.d/ && \
+    echo "build ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/build && \
+    chmod 0440 /etc/sudoers.d/build
+ENV HOME /home/build
+
+# Add build user to the dialout group to be able to write the serial USB device.
+RUN sed "s/^dialout.*/&build/" /etc/group -i \
+    && sed "s/^root.*/&build/" /etc/group -i
+
+# Change ownership of build directory to build:build.
+RUN chown -R build:build /home/build/
+
+# Use display
 ENV DISPLAY :1.0
 
-USER developer
+# Change to user build.
+USER build

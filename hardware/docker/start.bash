@@ -43,10 +43,12 @@ else
     docker container run \
         --detach \
         --tty \
-        --name ${CONTAINER_NAME} \
-        -v $HOME/.Xauthority:/home/developer/.Xauthority \
-        -v $HOME/Arduino:/home/developer/Arduino \
+        --net=host \
+        --env="DISPLAY=$DISPLAY" \
+        --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
+        --volume $HOME/Arduino:/home/build/Arduino \
         --device /dev/ttyUSB0:/dev/ttyUSB0 \
+        --name ${CONTAINER_NAME} \
         ${DOCKER_HUB_USER_NAME}/${IMAGE_NAME}:${IMAGE_TAG} &> /dev/null
     if [ $? == 0 ]
     then
