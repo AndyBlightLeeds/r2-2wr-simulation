@@ -57,5 +57,37 @@ Use the docker in this directory as the ESP32 tools need Python 2 and specific v
         ...
         ```
 
+To test the camera, copy the directory `arduino/CameraWebServer` into your `~/Arduino/code` directory.  Start the Arduino IDE, if not already running, using
+
+```bash
+cd hardware/docker
+./start.bash
+./arduino.bash
+```
+
+In IDE, open `Sketchbook > code > CameraWebServer`.  You now need to find the lines
+
+```c
+const char* ssid = "YOUR WI-FI SSID";
+const char* password = "YOUR WI-FI PASSWORD";
+```
+
+and replace the values `YOUR WI-FI SSID` and `YOUR WI-FI PASSWORD` with the values for your Wi-Fi.  Save and compile.  If OK, the upload the sketch to the ESP32 using the upload instructions above.  After restarting the ESP32, you should see something like this on the serial monitor:
+
+```text
+...
+WiFi connected
+Starting web server on port: '80'
+Starting stream server on port: '81'
+Camera Ready! Use 'http://192.168.1.10' to connect
+```
+
+Enter the URL, in this case `http://192.168.1.10`, into your browser and you should see this:
+
+![ESP32-CAM camera controls](Screenshot_20210227_204444.png "ESP32-CAM camera controls")
+
+Press the "Start Stream" button and you should get a video picture appear on the screen.  If you do, go make a cup of tea to celebrate!
+
 ## Programming the real code
 
+To Do.
