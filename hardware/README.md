@@ -24,51 +24,38 @@ Minimal connections for testing are:
 | UOT | White |
 | UnR | Green |
 
-To program the device, you need to link pin `IO0` to `GND`.  This can be permanently linked when developing.
+You will also need a link to connect pins `IO0` and `GND` during programming.
 
-## Programming the ESP32-CAM
+## Initial setup and testing of the ESP32-CAM
 
 Use the docker in this directory as the ESP32 tools need Python 2 and specific versions of python libraries.
 
-1. Start Arduino IDE using `docker/arduino.sh`.
-1. [Set up the Arduino IDE to use the  ESP32](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-mac-and-linux-instructions/) that boils down to
+1. Make sure you have the ESP32 connected using a USB serial lead and it appears on your host PC as `/dev/ttyUSB0`.
+2. Start Arduino docker using `docker/start.sh`.
+3. Start Arduino IDE using `docker/arduino.sh`.
+4. First time only! [Set up the Arduino IDE to use the  ESP32](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-mac-and-linux-instructions/) that boils down to
    1. Add the URL <https://dl.espressif.com/dl/package_esp32_index.json> to the `File > Preferences` > `Settings` for additional boards.
    2. Then go to `Tools > Boards Manager`.  Search for ESP32.  Install latest version.  I'm using v1.0.5.
-1. Select the board using `Tools > ESP32 Arduino`.  I used the `AI Thinker ESP32-CAM" as it was the closest I could find.
-1. Select port `/dev/ttyUSB0`.
-1. Verify the connection by runnig the
-1. Open `File > Examples > ESP32 > Camera > CameraWebServer`.
+   3. Select the board using `Tools > ESP32 Arduino`.  I used the `AI Thinker ESP32-CAM" as it was the closest I could find.
+   4. Select port `/dev/ttyUSB0`.
+   5. Verify the connection by running the
+   6. Open `File > Examples > ESP32 > WiFi > WiFiScan`.
+   7. To upload the file:
+      1. On the ESP32, link pins `IO0` and `GND`.
+      2. Press the `upload` button on the IDE.
+      3. Press and release the `RST` button on the ESP32.
+      4. The upload should now complete.
+      5. When the upload has completed, remove the link from pins `IO0` and `GND` and press and release the `RST` button.
+      6. The app should now start.
+   8. The app can be monitored using the Arduino serial monitor window with the Baud rate set to `115200`.
+   9. You should see something like this:
 
-### Troubleshooting
+        ```text
+        scan start
+        scan done
+        12 networks found
+        ...
+        ```
 
-#### ESP32 serial error
-
-```code
-Traceback (most recent call last):
-  File "/home/andy/.arduino15/packages/esp32/tools/esptool_py/3.0.0/esptool.py", line 38, in <module>
-    import serial
-ImportError: No module named serial
-Multiple libraries were found for "WiFi.h"
- Used: /home/andy/.arduino15/packages/esp32/hardware/esp32/1.0.5/libraries/WiFi
- Not used: /home/andy/software/arduino-1.8.13/libraries/WiFi
-exit status 1
-Error compiling for board AI Thinker ESP32-CAM.
-```
-
-Caused by missing python library.  Proved this by running the executable from the command line using:
-
-```bash
-/home/andy/.arduino15/packages/esp32/tools/esptool_py/3.0.0/esptool.py
-```
-
-[This blog](https://koen.vervloesem.eu/blog/fixing-the-arduino-ide-for-the-esp32esp8266-on-ubuntu-2004/) was helpful is finding the fix which was:
-
-```bash
-curl https://bootstrap.pypa.io/2.7/get-pip.py --output get-pip.py
-python2 get-pip.py
-pip2 install pyserial
-/home/andy/.arduino15/packages/esp32/tools/esptool_py/3.0.0/esptool.py
-```
-
-## Connecting the ESP32-CAM
+## Programming the real code
 
