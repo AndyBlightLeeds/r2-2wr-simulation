@@ -7,7 +7,7 @@ The script `~/code/docker/build.bash` creates the docker image.  Do this just on
 
 To start the container, use `~/code/docker/start.bash` which script starts the container and leaves it running until `~/code/docker/stop.bash` is called.  It also copies any scripts from the `~/setup` directory into the workspace directory to allow the user to setup the workspace.
 
-To start the Arduino IDE, use `./arduino.bash`.
+To start the Arduino IDE, use `./arduino.bash`.  You may be asked to update the IDE but don't do this.  If you need a later version, update the version number in the dockerfile, rebuild the image and start a new container.
 
 After starting the container, you can get a Bash user prompt attached to the container using `~/code/docker/attach.bash`.  The command `source /opt/ros/foxy/setup.bash` is run for each new terminal.
 

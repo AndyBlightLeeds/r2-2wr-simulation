@@ -4,9 +4,7 @@ The hardware for this robot is based on a RasPiRobot kit I bought years ago.
 
 ![RasPiRobot Rover Robot](RasPiRobot.jpg "RasPiRobot Rover Robot")
 
-Instead of the Raspberry Pi 2 shown in the picture, I'm using an ESP32-CAM module using the same RasPiRobot RRBv3 board to drive the motors.  The camera will be used instead of the ultrasonic sensor.
-
-[RasPiRobot board repo](https://github.com/simonmonk/raspirobotboard3).
+Instead of the Raspberry Pi 2 shown in the picture, I'm using an ESP32-CAM module using the same [RasPiRobot RRBv3 board ](https://github.com/simonmonk/raspirobotboard3) to drive the motors.  The camera will be used instead of the ultrasonic sensor.
 
 ## The ESP32-CAM
 
@@ -23,8 +21,10 @@ Minimal connections for testing are:
 |-|-|
 | 5V | Red |
 | GND | Black |
-|
+| UOT | White |
+| UnR | Green |
 
+To program the device, you need to link pin `IO0` to `GND`.  This can be permanently linked when developing.
 
 ## Programming the ESP32-CAM
 

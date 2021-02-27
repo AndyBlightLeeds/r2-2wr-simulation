@@ -36,7 +36,7 @@ RUN add-apt-repository ppa:ubuntuhandbook1/apps \
 
 
 # Install the Arduino IDE.
-ENV ARDUINO_IDE_VERSION 1.8.12
+ENV ARDUINO_IDE_VERSION 1.8.13
 RUN (wget -q -O- https://downloads.arduino.cc/arduino-${ARDUINO_IDE_VERSION}-linux64.tar.xz \
 	| tar xJC /usr/local/share \
 	&& ln -s /usr/local/share/arduino-${ARDUINO_IDE_VERSION} /usr/local/share/arduino \

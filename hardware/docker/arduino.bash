@@ -10,4 +10,4 @@ docker exec \
     --user build \
     --workdir /home/build \
     ${CONTAINER_NAME} \
-    arduino
+    arduino &> /dev/null

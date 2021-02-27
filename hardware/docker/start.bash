@@ -4,11 +4,6 @@
 
 docker_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
 . ${docker_dir}/vars.bash
-CODE_DIR=${docker_dir}/..
-
-mkdir -p ${WORKSPACE_DIR}
-cp -f ${docker_dir}/../setup/*.bash ${WORKSPACE_DIR}
-cp -f ${docker_dir}/../vars.bash ${WORKSPACE_DIR}
 
 docker container inspect ${CONTAINER_NAME} &> /dev/null
 if [ $? == 0 ]
@@ -25,21 +20,6 @@ then
     fi
 else
     # Container does not exist.
-    mkdir -p ${WORKSPACE_DIR}
-    # Setup X window for the container to use.
-    XAUTH=/tmp/.docker.xauth
-    if [ ! -f $XAUTH ]
-    then
-        xauth_list=$(xauth nlist :0 | sed -e 's/^..../ffff/')
-        if [ ! -z "$xauth_list" ]
-        then
-            echo $xauth_list | xauth -f $XAUTH nmerge -
-        else
-            touch $XAUTH
-        fi
-        chmod a+r $XAUTH
-    fi
-
     docker container run \
         --detach \
         --tty \
@@ -47,6 +27,7 @@ else
         --env="DISPLAY=$DISPLAY" \
         --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
         --volume $HOME/Arduino:/home/build/Arduino \
+        --volume $HOME/.arduino15:/home/build/.arduino15 \
         --device /dev/ttyUSB0:/dev/ttyUSB0 \
         --name ${CONTAINER_NAME} \
         ${DOCKER_HUB_USER_NAME}/${IMAGE_NAME}:${IMAGE_TAG} &> /dev/null
