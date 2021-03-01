@@ -2,20 +2,34 @@
 
 The hardware for this robot is based on a RasPiRobot kit I bought years ago.
 
-![RasPiRobot Rover Robot](RasPiRobot.jpg "RasPiRobot Rover Robot")
+![RasPiRobot Rover Robot](resources/RasPiRobot.jpg "RasPiRobot Rover Robot")
 
 Instead of the Raspberry Pi 2 shown in the picture, I'm using an ESP32-CAM module using the same [RasPiRobot RRBv3 board ](https://github.com/simonmonk/raspirobotboard3) to drive the motors.  The camera will be used instead of the ultrasonic sensor.
 
 ## The ESP32-CAM
 
-The ESP32-CAM board I'm using was bought from [AliExpress](https://www.aliexpress.com/item/1005001597435442.html) and is fitted with:
+The ESP32-CAM board I'm using was bought from [AliExpress](https://www.aliexpress.com/item/1005001597435442.html)
 
-* RAM
-* ...
+![ESP32-CAM module](resources/ESP32-CAM.jpg "ESP32-CAM module")
 
-Other ESP32-CAM modules are available but the pins used may vary so check carefully before
+The module comes with:
 
-Minimal connections for testing are:
+* An ESP32-S module with 520kB RAM, 4MB SPI flash.
+* An OV2640 camera, 66&deg; lens.
+
+Other ESP32-CAM modules are available but the pins used may vary so check carefully before blindly following my instructions.  This [schematic](resources/ESP32_CAM_V1.6.pdf) matches the board.
+
+The ESP32-CAM board has no USB connector so needs to be programmed using the serial pins.  I used a PL2303HX USB to UART TTL cable from AliExpress <https://www.aliexpress.com/item/33040891991.html>.
+
+![PL2303HX USB to UART TTL Cable ](resources/USBSerialCable.jpg "PL2303HX USB to UART TTL Cable ")
+
+`lsusb` shows it as below.
+
+```text
+Bus 001 Device 006: ID 067b:2303 Prolific Technology, Inc. PL2303 Serial Port
+```
+
+Connections for the ESP32-CAM to the USB serial cable are shown below.
 
 | ESP32-CAM Pin | USB serial cable |
 |-|-|
@@ -24,13 +38,13 @@ Minimal connections for testing are:
 | UOT | White |
 | UnR | Green |
 
-You will also need a link to connect pins `IO0` and `GND` during programming.
+You will also need a wire link to connect pins `IO0` and `GND` during programming, and remove the link for it to boot normally after programming.
 
 ## Initial setup and testing of the ESP32-CAM
 
 Use the docker in this directory as the ESP32 tools need Python 2 and specific versions of python libraries.
 
-1. Make sure you have the ESP32 connected using a USB serial lead and it appears on your host PC as `/dev/ttyUSB0`.
+1. __Make sure you have the ESP32 connected using a USB serial lead and it appears on your host PC as `/dev/ttyUSB0`. The docker will not start if this is not plugged in.__
 2. Start Arduino docker using `docker/start.sh`.
 3. Start Arduino IDE using `docker/arduino.sh`.
 4. First time only! [Set up the Arduino IDE to use the  ESP32](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-mac-and-linux-instructions/) that boils down to
@@ -84,7 +98,7 @@ Camera Ready! Use 'http://192.168.1.10' to connect
 
 Enter the URL, in this case `http://192.168.1.10`, into your browser and you should see this:
 
-![ESP32-CAM camera controls](Screenshot_20210227_204444.png "ESP32-CAM camera controls")
+![ESP32-CAM camera controls](resources/Screenshot_20210227_204444.png "ESP32-CAM camera controls")
 
 Press the "Start Stream" button and you should get a video picture appear on the screen.  If you do, go make a cup of tea to celebrate!
 
